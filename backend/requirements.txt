@@ -9,3 +9,4 @@ joblib
 tiffile
 imagecodecs
 rasterio
+flask-cors
