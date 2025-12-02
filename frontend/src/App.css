@@ -1,195 +1,220 @@
-/* Layout */
-.app-container {
-  width: 100%;
-  height: 100%;
-  min-height: 100vh;
-  display: flex;
+/* frontend/src/App.css */
+
+/* --- theme --- */
+:root{
+  --bg: #0f0b18;               /* deep dark */
+  --panel: #16121f;            /* card background */
+  --muted: #9b8fb1;            /* muted text */
+  --accent: #b388ff;          /* purple accent (headings) */
+  --accent-2: #8a4cff;        /* stronger purple */
+  --success: #78ff9a;
+  --warning: #ffb347;
+  --danger:  #ff6363;
+  --glass: rgba(255,255,255,0.03);
+  --border: rgba(255,255,255,0.06);
+  --radius: 10px;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", monospace;
 }
 
-.layout {
-  display: flex;
-  height: 100vh;
-  background: #f4f6f8;
+/* --- reset-ish --- */
+* { box-sizing: border-box; }
+html,body,#root { height: 100%; }
+body{
+  margin: 0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg, var(--bg) 0%, #060409 100%);
+  color: #eae6f8;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 20px;
 }
 
-/* Sidebar */
-.sidebar {
-  width: 240px;
-  background: #1d2939;
-  color: white;
-  padding: 25px;
-  flex-shrink: 0;
-}
-
-.sidebar h2 {
-  font-size: 22px;
-  margin-bottom: 20px;
-  font-weight: 700;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-  margin-top: 30px;
-}
-
-.sidebar li {
-  padding: 12px 0;
-  font-size: 16px;
-  opacity: 0.8;
-  cursor: pointer;
-}
-
-.sidebar li.active,
-.sidebar li:hover {
-  opacity: 1;
-  font-weight: 600;
-}
-
-/* Main */
-.main {
-  flex: 1;
+/* --- app container --- */
+.app{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  gap: 14px;
 }
 
-/* Topbar */
-.topbar {
-  background: white;
-  padding: 20px 30px;
-  border-bottom: 1px solid #ddd;
+/* header */
+.app h1{
+  margin: 0 0 4px 0;
+  color: var(--accent);
+  letter-spacing: -0.4px;
+  font-size: 1.6rem;
+  line-height: 1;
 }
-
-.topbar h1 {
+.app p.subtitle {
   margin: 0;
-  font-size: 24px;
-  font-weight: 600;
+  color: var(--muted);
+  font-size: 0.92rem;
 }
 
-/* Content */
-.content {
-  padding: 30px;
-  display: flex;
-  gap: 30px;
-  flex-wrap: wrap;
+/* --- control bar --- */
+.controls{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  flex-wrap:wrap;
 }
 
-/* Cards */
-.upload-card,
-.uploaded-card {
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  width: 380px;
-  max-width: 100%;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+.uploader{
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid var(--border);
+  padding: 10px;
+  border-radius: var(--radius);
+  display:flex;
+  gap:8px;
+  align-items:center;
 }
 
-.upload-box {
-  border: 2px dashed #bbb;
-  padding: 25px;
-  border-radius: 10px;
-  text-align: center;
-  cursor: pointer;
-  margin-bottom: 15px;
-}
-
-.upload-box:hover {
-  border-color: #1d2939;
-}
-
-/* Hide input */
-#file-input {
-  display: none;
-}
-
-.upload-box label {
-  font-size: 16px;
-  color: #555;
-  cursor: pointer;
-}
-
-/* Preview */
-.preview-box img {
-  width: 100%;
-  margin-top: 10px;
-  border-radius: 8px;
-  object-fit: cover;
-}
-
-/* Button */
-.btn {
-  width: 100%;
-  padding: 12px;
-  background: #16a34a;
-  color: white;
-  border: none;
+.uploader input[type="file"]{
+  color: var(--muted);
+  background: none;
+  border: 1px dashed rgba(255,255,255,0.03);
+  padding: 6px 10px;
   border-radius: 6px;
+}
+
+/* number inputs & small controls */
+.controls input[type="number"],
+.controls input[type="text"]{
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: #efeaf8;
+  width: 110px;
+  font-size: 0.95rem;
+}
+
+/* Buttons */
+button{
+  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 100%);
+  color: #0b0610;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
+  box-shadow: 0 6px 18px rgba(138,76,255,0.12);
+  transition: transform .08s ease, box-shadow .12s ease, opacity .08s ease;
+}
+button:active{ transform: translateY(1px) }
+button.secondary{
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+button.ghost{
+  background: var(--glass);
+  color: var(--muted);
+  border: 1px solid rgba(255,255,255,0.03);
 }
 
-.btn:hover {
-  background: #128c3f;
+/* --- annotator area --- */
+.annotator-card{
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+  border: 1px solid var(--border);
+  padding: 12px;
+  border-radius: 12px;
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
 }
 
-/* --------------------------- */
-/* RESPONSIVE RULES */
-/* --------------------------- */
-
-/* Tablet */
-@media (max-width: 992px) {
-  .layout {
-    flex-direction: column;
-    height: auto;
-  }
-
-  .sidebar {
-    width: 100%;
-    padding: 18px;
-  }
-
-  .topbar h1 {
-    font-size: 20px;
-  }
-
-  .content {
-    justify-content: center;
-  }
+/* image container ensures overlay lines up and is responsive */
+.annotator-image-wrapper{
+  position: relative;
+  max-width: 100%;
+  width: 880px;   /* reasonable default, will shrink on small screens */
+  background: #060509;
+  display: inline-block;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.02);
 }
 
-/* Mobile */
-@media (max-width: 600px) {
-  .sidebar h2 {
-    font-size: 18px;
-  }
+/* image itself */
+.annotator-image-wrapper img{
+  display:block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+  image-rendering: auto;
+}
 
-  .topbar {
-    padding: 15px 20px;
-  }
+/* svg overlay should cover the same area; we set pointer-events at polygon level but here is fallback */
+.annotator-image-wrapper svg{
+  position:absolute;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  overflow: visible;
+  pointer-events: none; /* polygons enable pointer-events individually */
+}
 
-  .topbar h1 {
-    font-size: 18px;
-  }
+/* polygon styling (in addition to inline props) */
+.annotator-image-wrapper polygon{
+  transition: fill .12s ease, stroke .12s ease, opacity .12s ease;
+  vector-effect: non-scaling-stroke;
+}
 
-  .content {
-    padding: 20px;
-    gap: 20px;
-  }
+/* side controls */
+.annotator-side{
+  min-width: 240px;
+  max-width: 300px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  color: var(--muted);
+  font-size: 0.94rem;
+}
 
-  .upload-card,
-  .uploaded-card {
-    padding: 20px;
-    width: 100%;
-  }
+.stat{
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.03);
+}
 
-  .upload-box {
-    padding: 20px;
-  }
+/* labels legend */
+.legend{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.legend .pill{
+  padding:6px 8px;
+  border-radius: 999px;
+  font-weight:600;
+  font-size:0.85rem;
+  color:#0b0610;
+}
+.pill.good{ background: var(--success); }
+.pill.moderate{ background: var(--warning); }
+.pill.bad{ background: var(--danger); }
 
-  .btn {
-    padding: 10px;
-    font-size: 15px;
-  }
+.controls-row { display:flex; gap:8px; align-items:center; }
+
+/* footer small */
+.app footer{
+  margin-top: 8px;
+  color: #9b8fb1;
+  font-size: 0.85rem;
+}
+
+/* responsive */
+@media (max-width: 980px){
+  .annotator-card{ flex-direction: column; align-items:center; }
+  .annotator-image-wrapper{ width: 100%; }
+  .annotator-side{ width: 100%; max-width: none; min-width: auto; }
 }
