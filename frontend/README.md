@@ -1,16 +1,266 @@
-# React + Vite
+⭐ ROADMAP TO BUILD THE FULL PROJECT (Frontend + Backend + ML + Deployment)
+PHASE 0: Understand the problem (you’re here)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Goal: Classify each pixel of a drone orthomosaic into 3 classes using superpixels.
 
-Currently, two official plugins are available:
+Inputs:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Orthomosaic image
+Outputs:
 
-## React Compiler
+Color-coded segmentation mask
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Pipeline:
 
-## Expanding the ESLint configuration
+Upload → Superpixels → Feature Extraction → ML Model → Overlay → Return
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+We’ve already taken half the steps, but let’s do this systematically.
+
+PHASE 1: Data Preparation (the painful but important phase)
+1. Collect orthomosaic images
+
+Drone images of crop fields (JPG/PNG).
+
+2. Label training masks
+
+Use one of:
+
+CVAT
+
+QGIS
+
+LabelMe
+
+Produce masks:
+
+Same height/width as the image
+
+Pixel values = {0,1,2}
+
+No weird colors, no transparency
+
+3. Organize dataset
+project/
+  images/
+    field1.png
+    field2.png
+  masks/
+    field1.png
+    field2.png
+
+
+This is required for the training script.
+
+PHASE 2: Model Development
+Step 1: Build superpixel + feature extraction pipeline
+
+Already done:
+
+compute_superpixels()
+
+extract_features_for_labels()
+
+labels_to_mask()
+
+Step 2: Train a model with your masks
+
+Run:
+
+python train.py --images_dir images --masks_dir masks --out model_rf.joblib
+
+
+What happens internally:
+
+Generate superpixels on each image
+
+Extract features
+
+Assign class label via majority vote
+
+Train RandomForest classifier
+
+Save model to disk
+
+Step 3: Evaluate model
+
+Check:
+
+Accuracy
+
+Confusion matrix
+
+Visual overlay outputs to see if it makes sense
+
+If results are trash:
+
+Increase superpixel count
+
+Add NDVI as feature
+
+Add texture features (GLCM)
+
+Use more images
+
+Clean masks
+
+PHASE 3: Backend Integration (Flask API)
+
+You already built:
+
+1. /upload
+
+User uploads orthomosaic. Backend stores it.
+
+2. /classify
+
+Backend:
+
+Loads saved image
+
+Loads ML model
+
+Runs superpixel segmentation
+
+Extracts features
+
+Predicts class of each region
+
+Generates overlay mask
+
+Saves output
+
+Returns URL to frontend.
+
+Your current app.py is already updated for this step.
+
+PHASE 4: Frontend Integration (React)
+
+Frontend must:
+
+1. Upload image
+
+Use <input type="file">.
+POST → /upload.
+
+2. Trigger classification
+
+Take returned filename.
+POST → /classify with:
+
+{ "filename": "field1.png" }
+
+3. Display output
+
+Image returned from:
+
+/outputs/classified_field1.png
+
+
+Show side-by-side:
+
+Original image
+
+Segmented mask
+
+Bonus:
+
+Transparent overlay slider
+
+Zoom & pan using react-image-magnify or OpenLayers
+
+PHASE 5: Testing the full workflow
+Test with:
+
+Good images
+
+Dark images
+
+Blurry images
+
+Large resolution images
+
+Make sure:
+
+Backend doesn’t crash
+
+Output resolution matches input
+
+No weird file overwrites
+
+PHASE 6: Optimization (after MVP)
+Add NDVI
+
+If you have NIR band:
+
+NDVI = (NIR - Red) / (NIR + Red)
+
+
+Add as new feature.
+
+Add texture features (GLCM)
+
+Helps crop applications.
+
+Use tile-based processing for huge images
+
+Orthomosaics get massive:
+
+Split image into tiles
+
+Run pipeline
+
+Stitch output
+
+Use GPU version (Optional)
+
+If you add a CNN later.
+
+PHASE 7: Deployment
+Option 1: Local deployment
+
+React frontend + Flask backend on same machine.
+
+Option 2: Cloud deployment
+
+Render / Railway for backend
+
+Vercel / Netlify for frontend
+
+S3 bucket or Firebase storage for outputs
+
+Option 3: Docker
+
+Wrap everything in containers:
+
+frontend-container
+
+backend-container
+
+Volume for uploads
+Then deploy anywhere.
+
+PHASE 8: Documentation (for your internship report)
+
+Write sections:
+
+Problem statement
+
+Pipeline architecture
+
+Superpixel segmentation explanation
+
+ML training methodology
+
+Backend architecture
+
+Frontend flow
+
+Results + screenshots
+
+Future improvements
+
+Your supervisor will love this.
+
+⭐ THE PROJECT IN ONE SENTENCE
+
+“User uploads field image → superpixels extracted → ML model classifies each region → backend generates segmentation mask → frontend displays result.”
