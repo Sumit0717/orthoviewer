@@ -1,0 +1,122 @@
+/* Layout */
+.layout {
+  display: flex;
+  height: 100vh;
+  background: #f4f6f8;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  background: #1d2939;
+  color: white;
+  padding: 25px;
+}
+
+.sidebar h2 {
+  font-size: 22px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 30px;
+}
+
+.sidebar li {
+  padding: 12px 0;
+  font-size: 16px;
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.sidebar li.active,
+.sidebar li:hover {
+  opacity: 1;
+  font-weight: 600;
+}
+
+/* Main Area */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Topbar */
+.topbar {
+  background: white;
+  padding: 20px 30px;
+  border-bottom: 1px solid #ddd;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+/* Content */
+.content {
+  padding: 30px;
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+/* Upload Card */
+.upload-card,
+.uploaded-card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  width: 380px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.upload-box {
+  border: 2px dashed #bbb;
+  padding: 25px;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+.upload-box:hover {
+  border-color: #1d2939;
+}
+
+/* Hide input */
+#file-input {
+  display: none;
+}
+
+.upload-box label {
+  font-size: 16px;
+  color: #555;
+}
+
+.preview-box img {
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 8px;
+}
+
+/* Button */
+.btn {
+  width: 100%;
+  padding: 12px;
+  background: #16a34a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #128c3f;
+}
