@@ -1,0 +1,11 @@
+flask
+numpy
+scikit-image
+scikit-learn
+opencv-python
+pillow
+matplotlib
+joblib
+tiffile
+imagecodecs
+rasterio
