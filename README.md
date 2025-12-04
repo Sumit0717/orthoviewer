@@ -92,3 +92,31 @@ project/
 
 ---
 
+# OrthoViewer - Semi-automated Superpixel Labeler
+
+## Setup backend
+cd backend
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python app.py
+
+Backend will run on http://127.0.0.1:5000
+
+## Setup frontend (dev)
+cd frontend
+npm install
+npm start
+# frontend dev server runs, proxies to backend endpoints (if same origin rules apply).
+# Alternatively run `npm run build` and let Flask serve build/ files (app.py contains static serving).
+
+## Usage
+1. Open the frontend.
+2. Upload an orthomosaic image (png/jpg/tif).
+3. On upload the backend will compute superpixels and return polygons.
+4. Click polygons to label them (cycles through states). Labels are saved to backend.
+5. Download labels JSON or reload stored labels.
+
+Notes:
+- For very large orthomosaics, consider tiling before segmentation.
+- This is a minimal dev implementation; for production, add auth, chunked uploads, job queue for segmentation, and object storage.

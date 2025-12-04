@@ -10,7 +10,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 from PIL import Image
-from utils import compute_superpixels, extract_features_for_labels
+from orthoviewer.backend.helpers import compute_superpixels, extract_features_for_labels
 
 def load_image(path):
     img = Image.open(path).convert("RGB")
